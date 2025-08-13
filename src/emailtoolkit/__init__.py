@@ -1,5 +1,11 @@
 # emailtoolkit/__init__.py
-__version__ = "0.1.2"
+from pathlib import Path
+
+try:
+    version_path = Path(__file__).parent.parent.parent / "VERSION"
+    __version__ = version_path.read_text(encoding="utf-8").strip()
+except FileNotFoundError:
+    __version__ = "0.0.0" # Fallback version
 
 from .emails import (
     Config,
@@ -29,6 +35,5 @@ __all__ = [
     "compare",
     "domain_health",
     "build_tools",
+    "__version__",
 ]
-
-__all__ += ["__version__"]
