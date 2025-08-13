@@ -1,9 +1,9 @@
 # 📧 emailtoolkit
 
-[![PyPI](https://img.shields.io/pypi/v/emailtoolkit.svg)](https://pypi.org/project/emailtoolkit/)
-![Python 3.9+](https://img.shields.io/pypi/pyversions/emailtoolkit.svg)
-[![CI](https://github.com/ImYourBoyRoy/emailtoolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/ImYourBoyRoy/emailtoolkit/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![PyPI Version](https://img.shields.io/pypi/v/emailtoolkit.svg)](https://pypi.org/project/emailtoolkit/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/emailtoolkit.svg)](https://pypi.org/project/emailtoolkit/)
+[![CI Status](https://github.com/ImYourBoyRoy/emailtoolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/ImYourBoyRoy/emailtoolkit/actions/workflows/ci.yml)
+[![License](https://img.shields.io/pypi/l/emailtoolkit.svg)](https://opensource.org/licenses/MIT)
 [![Typing: PEP 561](https://img.shields.io/badge/Typing-PEP%20561-informational.svg)](https://peps.python.org/pep-0561/)
 
 > RFC‑aware email parsing, normalization, extraction, and DNS health checks with a clean, **phonenumbers‑style** API.
