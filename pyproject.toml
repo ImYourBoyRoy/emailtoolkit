@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "emailtoolkit"
-version = "0.1.3"
+dynamic = ["version"]
 description = "RFC-aware email parsing, normalization, extraction, and DNS health checks with env-config and a phonenumbers-like API."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -35,12 +35,16 @@ dotenv = ["python-dotenv>=1.1.1"]
 [project.scripts]
 emailtoolkit = "emailtoolkit.main:_cli"
 
+[tool.hatch.version]
+path = "src/emailtoolkit/__init__.py"
+
 [tool.hatch.build]
 include = [
   "README.md",
   "LICENSE",
   "THIRD_PARTY_NOTICES.md",
   "src/emailtoolkit/**",
+  "VERSION",
 ]
 
 [tool.hatch.build.targets.wheel]
