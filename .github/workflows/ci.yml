@@ -30,19 +30,18 @@ jobs:
             pyproject.toml
 
       - name: Install package and extras
-        # Use double quotes so extras work on PowerShell and Bash
         run: |
           python -m pip install --upgrade pip
           pip install -e ".[dns,dotenv]"
-          # lightweight tooling; uncomment if you want lint/type checks
-          # pip install ruff mypy pytest
+
+      # --- ADD THIS STEP ---
+      - name: Create test environment files
+        # Creates the .env and disposable.txt files needed for the test script to pass.
+        run: |
+          echo "EMAILTK_DISPOSABLE_SOURCE=file://./disposable.txt" > .env
+          echo "mailinator.com" > disposable.txt
+        shell: bash
+      # --- END OF ADDED STEP ---
 
       - name: Run sanity script
-        # Uses your end-to-end script that is resilient to network issues
         run: python test_emailtoolkit.py
-
-      # Optional: lint and type check
-      # - name: Ruff
-      #   run: ruff check src
-      # - name: Mypy
-      #   run: mypy src/emailtoolkit
