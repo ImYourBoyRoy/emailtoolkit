@@ -1,83 +1,104 @@
 # 📧 emailtoolkit
 
+[![PyPI](https://img.shields.io/pypi/v/emailtoolkit.svg)](https://pypi.org/project/emailtoolkit/)
+![Python 3.9+](https://img.shields.io/pypi/pyversions/emailtoolkit.svg)
+[![CI](https://github.com/ImYourBoyRoy/emailtoolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/ImYourBoyRoy/emailtoolkit/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-blue.svg)
-[![Type hints: PEP 561](https://img.shields.io/badge/Typing-PEP%20561-informational.svg)](https://peps.python.org/pep-0561/)
-[![Status: Beta](https://img.shields.io/badge/status-beta-yellow.svg)](#roadmap)
+[![Typing: PEP 561](https://img.shields.io/badge/Typing-PEP%20561-informational.svg)](https://peps.python.org/pep-0561/)
 
-> RFC-aware email parsing, normalization, extraction, and DNS health checks with a clean, phonenumbers-style API. Env-configurable. Privacy-safe logging. Optional CLI.
+> RFC‑aware email parsing, normalization, extraction, and DNS health checks with a clean, **phonenumbers‑style** API.
 
 ---
 
-## ✨ Why emailtoolkit
+## ✨ Design goals
 
-* **Practical and strict where it matters**
-  Syntax validated with `email_validator`, IDN via `idna`, DNS health via `dnspython` (optional).
-* **Real-world canonicalization**
-  Provider-aware normalization and canonical comparison. Gmail dot and plus rules, googlemail aliasing, optional plus-stripping for common providers.
-* **Production ergonomics**
-  `.env` and `config.json` support, structured data classes, robust logging with PII redaction, TTL-cached DNS.
 * **Simple API**
-  Import functions or use the `EmailTools` class. Also ships a CLI for quick checks and pipelines.
+  Be as easy as phonenumbers. Import module‑level functions for quick tasks, or instantiate `EmailTools` for tuned, high‑performance use.
+
+* **Practical validation**
+  Separate syntax validation (via `email_validator`) from deliverability checks. Enforce your own DNS policy (require MX, or allow A/AAAA fallback).
+
+* **Provider‑aware identity**
+  Correctly determine that `test.user@gmail.com` and `testuser+sales@googlemail.com` are the same identity using canonicalization rules.
+
+* **Operations‑ready**
+  Native env, `.env`, and `config.json` support; PII‑safe logging; TTL‑cached DNS; robust CLI.
 
 ---
 
-## 🧩 Features
-
-* Parse, validate, normalize, canonicalize, compare
-* Extract addresses from free text with Unicode-aware regex
-* DNS health checks with MX and A/AAAA lookups, TTL caching
-* IDN handling with punycode conversion
-* Disposable domain filtering from file or URL source
-* Config precedence: environment > `.env` > `config.json` > defaults
-* Privacy by default: email redaction in logs and exceptions
-* CLI entry point for scripting and ops
-
----
-
-## 🚀 Install
-
-### From source (editable)
-
-```bash
-# from repo root
-python -m venv .venv
-. .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -U pip
-
-# optional extras:
-#   dns -> dnspython
-#   dotenv -> python-dotenv
-pip install -e ".[dns,dotenv]"
-```
-
-### From PyPI
+## 🚀 Installation
 
 ```bash
 pip install emailtoolkit
-# with optional extras
+# extras for DNS and .env support
 pip install "emailtoolkit[dns,dotenv]"
+```
+
+---
+
+## 🧪 Quick start
+
+```python
+import emailtoolkit as et
+
+# Validate
+et.is_valid("Test.User+sales@Gmail.com")  # True
+
+# Canonical form (provider‑specific rules)
+et.canonical("t.e.s.t+sales@googlemail.com")  # "test@gmail.com"
+
+# Compare by canonical identity
+et.compare("t.e.s.t+sales@googlemail.com", "test@gmail.com")  # True
+
+# Extract from free text (returns Email objects)
+found = et.extract("Contact a@example.com, A@EXAMPLE.com, and junk@@bad.")
+print([e.normalized for e in found])  # ["a@example.com", "A@example.com"]
+```
+
+---
+
+## 🛠️ Command‑line interface (CLI)
+
+```bash
+# Canonical form
+emailtoolkit canonical "t.e.s.t+bar@googlemail.com"
+# → test@gmail.com
+
+# Domain DNS health (JSON)
+emailtoolkit domain example.com
+# {
+#   "domain": "example.com",
+#   "ascii_domain": "example.com",
+#   "mx_hosts": [],
+#   "a_hosts": ["93.184.216.34"],
+#   "has_mx": false,
+#   "has_a": true,
+#   "disposable": false
+# }
+
+# Extract from stdin
+echo "Contact me at a@example.com" | emailtoolkit extract
 ```
 
 ---
 
 ## ⚙️ Configuration
 
-emailtoolkit loads configuration in this order:
+Load precedence:
 
-1. Environment variables
-2. `.env` file in the working directory (if `python-dotenv` is installed)
-3. `config.json` if you pass `--config` or `build_tools("/path/to/config.json")`
+1. Environment variables (e.g., `EMAILTK_LOG_LEVEL`)
+2. `.env` in the working directory (requires `dotenv` extra)
+3. `config.json` (when passed to CLI `--config` or `build_tools("/path/to/config.json")`)
 4. Internal defaults
 
-### Environment variables
+### Environment variables (full)
 
 | Variable                              | Type                                  | Default       | Description                                                           |
 | ------------------------------------- | ------------------------------------- | ------------- | --------------------------------------------------------------------- |
 | `EMAILTK_LOG_LEVEL`                   | str                                   | `INFO`        | Logging level: `DEBUG` `INFO` `WARNING` `ERROR`                       |
 | `EMAILTK_REQUIRE_MX`                  | bool                                  | `true`        | If true, deliverability requires MX. If false, MX or A/AAAA is enough |
 | `EMAILTK_REQUIRE_DELIVERABILITY`      | bool                                  | `false`       | If true, `parse` raises if deliverability fails                       |
-| `EMAILTK_ALLOW_SMTPUTF8`              | bool                                  | `true`        | Allow UTF-8 local parts per RFC 6531                                  |
+| `EMAILTK_ALLOW_SMTPUTF8`              | bool                                  | `true`        | Allow UTF‑8 local parts per RFC 6531                                  |
 | `EMAILTK_DNS_TIMEOUT_SECONDS`         | float                                 | `2.0`         | DNS timeout seconds                                                   |
 | `EMAILTK_DNS_TTL_SECONDS`             | int                                   | `900`         | TTL for cached DNS answers                                            |
 | `EMAILTK_USE_DNSPYTHON`               | bool                                  | `true`        | Use dnspython when available                                          |
@@ -96,130 +117,79 @@ emailtoolkit loads configuration in this order:
 | `EMAILTK_PII_REDACT_LOGS`             | bool                                  | `true`        | Mask emails in logs and exceptions                                    |
 | `EMAILTK_PII_REDACT_STYLE`            | `mask` or `none`                      | `mask`        | Redaction style                                                       |
 
-### Example `.env`
+See `.env.example` for a ready‑to‑copy template.
+
+---
+
+## 🧱 Disposable domain filtering
+
+Create a text file and point to it:
+
+```text
+# disposable.txt
+# Lines beginning with # are comments
+# Domains are matched case‑insensitively on ASCII form
+mailinator.com
+10minutemail.com
+sharklasers.com
+```
+
+Enable via `.env`:
 
 ```env
-EMAILTK_LOG_LEVEL=INFO
-EMAILTK_REQUIRE_MX=true
-EMAILTK_REQUIRE_DELIVERABILITY=false
-EMAILTK_DNS_TIMEOUT_SECONDS=1.5
-EMAILTK_DNS_TTL_SECONDS=60
-EMAILTK_USE_DNSPYTHON=true
-EMAILTK_PII_REDACT_LOGS=true
-EMAILTK_PII_REDACT_STYLE=mask
 EMAILTK_DISPOSABLE_SOURCE=file://./disposable.txt
 ```
 
-### Example `config.json`
+Optionally set:
 
-```json
-{
-  "log_level": "INFO",
-  "extract_unique": true,
-  "extract_max_results": null,
-  "require_mx": true,
-  "require_deliverability": false,
-  "allow_smtputf8": true,
-  "dns_timeout_seconds": 2.0,
-  "dns_ttl_seconds": 900,
-  "use_dnspython": true,
-  "normalize_case": true,
-  "gmail_style_canonicalization": true,
-  "treat_disposable_as_invalid": false,
-  "block_private_tlds": false,
-  "known_public_suffixes": null,
-  "disposable_source": "none"
-}
+```env
+EMAILTK_TREAT_DISPOSABLE_AS_INVALID=true
+```
+
+This will raise `EmailParseException` when parsing addresses on those domains.
+
+---
+
+## 🤖 Agents, MCP servers, and tool‑calling
+
+```python
+from pydantic import BaseModel, Field
+import emailtoolkit as et
+
+class EmailInput(BaseModel):
+    email: str = Field(..., description="Email address to parse")
+
+class DomainInput(BaseModel):
+    domain: str = Field(..., description="Domain to inspect")
+
+def tool_parse(args: EmailInput):
+    e = et.parse(args.email)
+    return {
+        "normalized": e.normalized,
+        "canonical": e.canonical,
+        "deliverable": e.deliverable_dns,
+        "domain": e.domain_info.ascii_domain,
+    }
+
+def tool_domain(args: DomainInput):
+    d = et.domain_health(args.domain)
+    return {
+        "domain": d.ascii_domain,
+        "has_mx": d.has_mx,
+        "has_a": d.has_a,
+        "disposable": d.disposable,
+    }
 ```
 
 ---
 
-## 🧪 Quick start
+## 📚 API surface
 
 ```python
 import emailtoolkit as et
+from emailtoolkit import EmailTools, Email, DomainInfo, EmailParseException
 
-et.is_valid("Test.User+sales@Gmail.com")            # True
-et.normalize("Test.User+sales@Gmail.com")           # "Test.User+sales@gmail.com"
-et.canonical("t.e.s.t+sales@googlemail.com")        # "test@gmail.com"
-et.compare("t.e.s.t+sales@googlemail.com", "test@gmail.com")  # True
-
-e = et.parse("Alice@example.com")
-print(e.normalized)          # "Alice@example.com"
-print(e.domain_info.has_mx)  # may be True/False depending on resolver
-
-found = et.extract("Contact a@example.com, A@EXAMPLE.com, junk@@bad")
-print([x.normalized for x in found])  # ["a@example.com"]
-```
-
-Prefer a configured instance:
-
-```python
-from emailtoolkit import EmailTools
-from emailtoolkit.utils.config import load_config
-
-tools = EmailTools(load_config("./config.json"))
-tools.is_valid("user@例え.テスト")
-```
-
----
-
-## 🛠️ CLI
-
-```bash
-# from anywhere once installed
-emailtoolkit parse "Test.User+foo@Gmail.com"
-emailtoolkit validate "user@example.com"
-emailtoolkit normalize "Test.User+foo@Gmail.com"
-emailtoolkit canonical "t.e.s.t+bar@googlemail.com"
-emailtoolkit domain example.com
-echo "a@example.com, t.e.s.t+z@gmail.com" | emailtoolkit extract --limit 5
-
-# use a config
-emailtoolkit --config ./emailtoolkit/configs/config.example.json parse "user@domain.com"
-```
-
----
-
-## 📚 API reference
-
-### Data models
-
-```python
-from emailtoolkit import Email, DomainInfo, EmailParseException
-```
-
-* `Email`
-
-  * `original` str
-  * `local` str
-  * `domain` str
-  * `ascii_email` str
-  * `normalized` str
-  * `canonical` str
-  * `domain_info` DomainInfo
-  * `valid_syntax` bool
-  * `deliverable_dns` bool
-  * `reason` Optional\[str]
-
-* `DomainInfo`
-
-  * `domain` str
-  * `ascii_domain` str
-  * `mx_hosts` tuple\[str, ...]
-  * `a_hosts` tuple\[str, ...]
-  * `has_mx` bool
-  * `has_a` bool
-  * `disposable` bool
-
-* `EmailParseException(ValueError)`
-  Includes `domain_info` for context.
-
-### Module functions
-
-```python
-import emailtoolkit as et
-
+# module functions
 et.parse(raw: str) -> Email
 et.is_valid(raw: str) -> bool
 et.normalize(raw: str) -> str
@@ -228,96 +198,51 @@ et.extract(text: str) -> list[Email]
 et.compare(a: str, b: str) -> bool
 et.domain_health(domain: str) -> DomainInfo
 et.build_tools(overrides_path: str | None = None) -> EmailTools
+
+# dataclasses
+Email(
+  original, local, domain, ascii_email, normalized, canonical,
+  domain_info: DomainInfo, valid_syntax: bool, deliverable_dns: bool, reason: str|None
+)
+DomainInfo(domain, ascii_domain, mx_hosts, a_hosts, has_mx, has_a, disposable)
 ```
-
-### Class
-
-```python
-from emailtoolkit import EmailTools
-from emailtoolkit.utils.config import Config, load_config
-
-tools = EmailTools(cfg=Config())              # or EmailTools(config_path="config.json") via loader
-tools.parse(...)
-```
-
-Behavior notes:
-
-* `parse` uses `email_validator` for syntax and normalization only.
-  Deliverability is decided by our DNS layer:
-
-  * If `require_mx` is true, deliverable means MX exists.
-  * If `require_mx` is false, deliverable means MX or A/AAAA exists.
-* Gmail canonicalization:
-
-  * `googlemail.com` is treated as `gmail.com` for identity comparison.
-  * Dots are stripped and plus-tags are removed for Gmail if enabled.
 
 ---
 
-## 🔒 Security and privacy
+## 🔒 Security & privacy
 
-* PII redaction in logs is enabled by default. Control with:
-
-  * `EMAILTK_PII_REDACT_LOGS=true|false`
-  * `EMAILTK_PII_REDACT_STYLE=mask|none`
-* Do not log raw emails in your app. The logger masks the local part by default.
-* If you enable SMTP probing in the future, keep it opt-in, rate limited, and legally vetted.
+* PII redaction in logs is on by default (`EMAILTK_PII_REDACT_LOGS`).
+* Avoid logging raw addresses in your application.
+* If SMTP probing is enabled in the future, keep it opt‑in, rate‑limited, and legally reviewed.
 
 ---
 
 ## 🧰 Development
 
 ```bash
-# lint and type checks (examples; use your preferred tools)
 pip install -e ".[dns,dotenv]" pytest ruff mypy
 ruff check src
 mypy src/emailtoolkit
 pytest -q
 ```
 
-Optional sanity test script example is in the repo root:
-
-```
-python test_emailtoolkit.py
-```
-
----
-
-## 🧭 Roadmap
-
-* Async resolver and extractor for high concurrency
-* Provider rules registry loaded from data files
-* Optional SMTP RCPT probe with strict rate limits
-* Public suffix enforcement with a bundled list
-* Disposable domain updater command
-
 ---
 
 ## 🙏 Acknowledgments
 
-This project stands on the shoulders of these excellent libraries:
+Built on:
 
-* **email\_validator** by Joshua Tauberer — Unlicense (public domain)
-* **dnspython** — ISC license (optional dependency)
-* **idna** — BSD 3-Clause
+* **email\_validator** by Joshua Tauberer (Unlicense)
+* **dnspython** (ISC) \[optional]
+* **idna** (BSD‑3‑Clause)
 
-Full texts in `THIRD_PARTY_NOTICES.md`. Thank you to the maintainers and contributors of these projects.
+See `THIRD_PARTY_NOTICES.md` for license texts.
 
 ---
 
 ## 📦 License
 
-MIT. See [LICENSE](LICENSE).
-
-Third-party licenses are included in [THIRD\_PARTY\_NOTICES.md](THIRD_PARTY_NOTICES.md).
-
----
-
-## 💡 Contributing
-
-* Open an issue with clear reproduction steps or a focused proposal.
-* Small PRs preferred. Include tests and update docs where relevant.
-* Keep performance and privacy top of mind.
+MIT. See [LICENSE](LICENSE). Third‑party licenses in [THIRD\_PARTY\_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ---
 
