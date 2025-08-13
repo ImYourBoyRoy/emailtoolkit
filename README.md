@@ -26,6 +26,17 @@
 
 ---
 
+## ⭐ Features
+
+* **Automatic Cloudflare Decoding**: Transparently finds and decodes Cloudflare-protected email addresses from HTML.
+* **Robust Extraction**: Discovers emails from free text, `mailto:` links, and other common formats.
+* **Canonical Identity**: Intelligently compares emails, understanding that `test.user@gmail.com` is the same as `testuser+sales@googlemail.com`.
+* **DNS Health Checks**: Validates domain deliverability by checking for MX and A/AAAA records.
+* **Disposable Domain Filtering**: Flags or blocks emails from known disposable providers.
+* **Configurable**: Fine-tune behavior with environment variables, `.env` files, or a `config.json`.
+
+---
+
 ## 🚀 Installation
 
 ```bash
