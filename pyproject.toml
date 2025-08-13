@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling>=1.25"]
+requires = ["hatchling>=1.25", "hatch-vcs>=0.3"]
 build-backend = "hatchling.build"
 
 [project]
@@ -31,13 +31,15 @@ dependencies = ["email-validator>=2.2.0", "idna>=3.10"]
 [project.optional-dependencies]
 dns = ["dnspython>=2.7.0"]
 dotenv = ["python-dotenv>=1.1.1"]
-
 [project.scripts]
 emailtoolkit = "emailtoolkit.main:_cli"
 
 [tool.hatch.version]
-source = "file"
-path = "VERSION"
+source = "vcs"
+fallback-version = "0.0.0"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/emailtoolkit/_version.py"
 
 [tool.hatch.build]
 include = [
@@ -45,7 +47,6 @@ include = [
   "LICENSE",
   "THIRD_PARTY_NOTICES.md",
   "src/emailtoolkit/**",
-  "VERSION",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -58,3 +59,4 @@ packages = ["src/emailtoolkit"]
 Homepage = "https://github.com/imyourboyroy/emailtoolkit"
 Repository = "https://github.com/imyourboyroy/emailtoolkit"
 "Bug Tracker" = "https://github.com/imyourboyroy/emailtoolkit/issues"
+
