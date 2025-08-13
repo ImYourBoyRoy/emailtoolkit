@@ -1,11 +1,8 @@
 # emailtoolkit/__init__.py
-from pathlib import Path
-
 try:
-    version_path = Path(__file__).parent.parent.parent / "VERSION"
-    __version__ = version_path.read_text(encoding="utf-8").strip()
-except FileNotFoundError:
-    __version__ = "0.0.0" # Fallback version
+    from ._version import __version__
+except ImportError:
+    __version__ = "0.0.0"
 
 from .emails import (
     Config,
