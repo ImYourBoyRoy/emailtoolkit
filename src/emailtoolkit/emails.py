@@ -9,6 +9,7 @@ from .utils.config import Config, load_config
 from .utils.logger import build_logger
 from .utils.dns import DNSHelper
 from .utils.disposable import load_disposable
+from .utils.encoding import find_and_decode_cf_emails
 from .models import Email, DomainInfo, EmailParseException
 
 
@@ -92,16 +93,24 @@ class EmailTools:
     def extract(self, text: str) -> List[Email]:
         out: List[Email] = []
         seen: Set[str] = set()
-        for m in self._email_rx.finditer(text or ""):
-            candidate = m.group("email")
+
+        # Combine regex-found emails with Cloudflare-decoded emails
+        candidates = [m.group("email") for m in self._email_rx.finditer(text or "")]
+        decoded_cf = find_and_decode_cf_emails(text)
+        all_candidates = candidates + decoded_cf
+
+        for candidate in all_candidates:
             try:
                 e = self.parse(candidate)
             except EmailParseException:
                 continue
+            
+            # Use canonical form for deduplication if enabled
             key = e.canonical if self.cfg.extract_unique else e.normalized
             if self.cfg.extract_unique and key in seen:
                 continue
             seen.add(key)
+            
             out.append(e)
             if self.cfg.extract_max_results and len(out) >= self.cfg.extract_max_results:
                 break
