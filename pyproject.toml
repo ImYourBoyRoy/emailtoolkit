@@ -1,0 +1,34 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "emailtoolkit"
+version = "0.1.1"
+description = "RFC-aware email parsing, normalization, extraction, and DNS health checks with env-config and a phonenumbers-like API."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "ItsYourBoyRoy", email = "roy.dawson.iv@gmail.com" }]
+dependencies = ["email-validator>=2.2.0", "idna>=3.10"]
+
+[project.optional-dependencies]
+dns = ["dnspython>=2.7.0"]
+dotenv = ["python-dotenv>=1.1.1"]
+
+[project.scripts]
+emailtoolkit = "emailtoolkit.main:_cli"
+
+[tool.hatch.build]
+include = [
+  "README.md",
+  "LICENSE",
+  "THIRD_PARTY_NOTICES.md",
+  "src/emailtoolkit/**",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/emailtoolkit"]
+
+[tool.hatch.build.targets.editable]
+packages = ["src/emailtoolkit"]

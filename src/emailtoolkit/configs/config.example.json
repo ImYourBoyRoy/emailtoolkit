@@ -1,0 +1,21 @@
+{
+  "log_level": "INFO",
+  "extract_unique": true,
+  "extract_max_results": null,
+  "require_mx": true,
+  "require_deliverability": false,
+  "allow_smtputf8": true,
+  "dns_timeout_seconds": 2.0,
+  "dns_ttl_seconds": 900,
+  "use_dnspython": true,
+  "normalize_case": true,
+  "gmail_style_canonicalization": true,
+  "treat_disposable_as_invalid": false,
+  "block_private_tlds": false,
+  "known_public_suffixes": null,
+  "disposable_source": "none",
+  "enable_smtp_probe": false,
+  "smtp_probe_timeout": 3.0,
+  "smtp_probe_concurrency": 5,
+  "smtp_probe_helo": "example.com"
+}
