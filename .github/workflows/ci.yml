@@ -34,14 +34,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dns,dotenv]"
 
-      # --- ADD THIS STEP ---
       - name: Create test environment files
-        # Creates the .env and disposable.txt files needed for the test script to pass.
         run: |
           echo "EMAILTK_DISPOSABLE_SOURCE=file://./disposable.txt" > .env
           echo "mailinator.com" > disposable.txt
         shell: bash
-      # --- END OF ADDED STEP ---
 
       - name: Run sanity script
         run: python test_emailtoolkit.py
