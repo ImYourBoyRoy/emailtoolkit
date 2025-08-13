@@ -1,7 +1,7 @@
 # 📧 emailtoolkit
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)
+![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-blue.svg)
 [![Type hints: PEP 561](https://img.shields.io/badge/Typing-PEP%20561-informational.svg)](https://peps.python.org/pep-0561/)
 [![Status: Beta](https://img.shields.io/badge/status-beta-yellow.svg)](#roadmap)
 
