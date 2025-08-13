@@ -51,7 +51,7 @@ pip install -U pip
 pip install -e ".[dns,dotenv]"
 ```
 
-### From PyPI (when published)
+### From PyPI
 
 ```bash
 pip install emailtoolkit
