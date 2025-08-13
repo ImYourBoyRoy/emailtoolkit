@@ -36,7 +36,8 @@ dotenv = ["python-dotenv>=1.1.1"]
 emailtoolkit = "emailtoolkit.main:_cli"
 
 [tool.hatch.version]
-path = "src/emailtoolkit/__init__.py"
+source = "file"
+path = "VERSION"
 
 [tool.hatch.build]
 include = [
