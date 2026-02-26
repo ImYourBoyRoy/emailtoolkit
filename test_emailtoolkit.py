@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
+# ./test_emailtoolkit.py
+"""End-to-end sanity test script for emailtoolkit.
+
+Run path: `python test_emailtoolkit.py`
+Inputs: none (uses hardcoded samples and local package)
+Outputs: console printouts of parse results, exit code 0 on success, 1 on failure.
+Operational notes: Skips DNS-sensitive asserts if network is blocked.
 """
-End-to-end sanity test for emailtoolkit.
-Covers: parse, is_valid, normalize, canonical, extract, compare, domain_health, CLI.
-Skips DNS-sensitive asserts if network is blocked.
-"""
+
 import json
-import os
 import subprocess
 import sys
-from pathlib import Path
 from typing import Tuple
 
 import emailtoolkit as et  # uses editable install and .env
+
 
 def _print(title: str, obj) -> None:
     print(f"\n=== {title} ===")
@@ -20,6 +23,7 @@ def _print(title: str, obj) -> None:
     else:
         print(json.dumps(obj, indent=2))
 
+
 def _has_network() -> bool:
     # quick CLI ping using our own domain_health on well-known host
     try:
@@ -27,6 +31,7 @@ def _has_network() -> bool:
         return bool(info.has_mx or info.has_a)
     except Exception:
         return False
+
 
 def test_core_functions() -> Tuple[int, int]:
     passed, failed = 0, 0
@@ -87,7 +92,9 @@ def test_core_functions() -> Tuple[int, int]:
         # Dedup should collapse a@example.com variants to one
         assert any(x.normalized == "a@example.com" for x in found)
         # Should include googlemail address normalized/canonicalized
-        assert any(x.domain_info.ascii_domain in ("googlemail.com", "gmail.com") for x in found)
+        assert any(
+            x.domain_info.ascii_domain in ("googlemail.com", "gmail.com") for x in found
+        )
         _print("extract()", [f.normalized for f in found])
         passed += 1
     except Exception as err:
@@ -117,34 +124,62 @@ def test_core_functions() -> Tuple[int, int]:
 
     # 8) CLI smoke tests
     try:
-        pkg_root = Path(__file__).resolve().parent
         # parse
-        out = subprocess.check_output([sys.executable, "-m", "emailtoolkit.main", "parse", "test+tag@gmail.com"])
+        out = subprocess.check_output(
+            [sys.executable, "-m", "emailtoolkit.main", "parse", "test+tag@gmail.com"]
+        )
         data = json.loads(out.decode())
         assert data["valid_syntax"] is True
 
         # validate
-        out = subprocess.check_output([sys.executable, "-m", "emailtoolkit.main", "validate", "test@gmail.com"])
-        assert out.decode().strip() in ("true", "false")  # deliverability toggle can change this
+        out = subprocess.check_output(
+            [sys.executable, "-m", "emailtoolkit.main", "validate", "test@gmail.com"]
+        )
+        assert out.decode().strip() in (
+            "true",
+            "false",
+        )  # deliverability toggle can change this
 
         # normalize
-        out = subprocess.check_output([sys.executable, "-m", "emailtoolkit.main", "normalize", "Test.User+x@Gmail.com"])
+        out = subprocess.check_output(
+            [
+                sys.executable,
+                "-m",
+                "emailtoolkit.main",
+                "normalize",
+                "Test.User+x@Gmail.com",
+            ]
+        )
         assert out.decode().strip().endswith("@gmail.com")
 
         # canonical
-        out = subprocess.check_output([sys.executable, "-m", "emailtoolkit.main", "canonical", "t.e.s.t+foo@googlemail.com"])
+        out = subprocess.check_output(
+            [
+                sys.executable,
+                "-m",
+                "emailtoolkit.main",
+                "canonical",
+                "t.e.s.t+foo@googlemail.com",
+            ]
+        )
         assert out.decode().strip().startswith("test@")
 
         # domain
-        out = subprocess.check_output([sys.executable, "-m", "emailtoolkit.main", "domain", "example.com"])
+        out = subprocess.check_output(
+            [sys.executable, "-m", "emailtoolkit.main", "domain", "example.com"]
+        )
         _ = json.loads(out.decode())
 
         # extract from stdin
         p = subprocess.Popen(
             [sys.executable, "-m", "emailtoolkit.main", "extract", "--limit", "5"],
-            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
         )
-        std_out, std_err = p.communicate(b"ping us at a@example.com and test+z@gmail.com")
+        std_out, std_err = p.communicate(
+            b"ping us at a@example.com and test+z@gmail.com"
+        )
         assert p.returncode == 0
         arr = json.loads(std_out.decode())
         assert isinstance(arr, list) and len(arr) >= 1
@@ -155,6 +190,7 @@ def test_core_functions() -> Tuple[int, int]:
         failed += 1
 
     return passed, failed
+
 
 if __name__ == "__main__":
     ok, bad = test_core_functions()

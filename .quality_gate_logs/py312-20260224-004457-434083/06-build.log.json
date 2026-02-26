@@ -1,0 +1,11 @@
+{
+  "name": "build",
+  "status": "skipped",
+  "return_code": null,
+  "duration_sec": 0.0,
+  "command": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py312\\Scripts\\python.exe -m build",
+  "description": "Build sdist and wheel.",
+  "skipped_reason": "prebuild checks failed",
+  "stdout": "",
+  "stderr": ""
+}

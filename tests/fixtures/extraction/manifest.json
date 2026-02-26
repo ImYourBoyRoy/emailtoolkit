@@ -1,0 +1,23 @@
+[
+  {
+    "case_id": "landing_unique",
+    "html": "html/landing_unique.html",
+    "expected": "expected/landing_unique.json",
+    "extract_unique": true,
+    "extract_max_results": null
+  },
+  {
+    "case_id": "cf_protected_mix",
+    "html": "html/cf_protected_mix.html",
+    "expected": "expected/cf_protected_mix.json",
+    "extract_unique": true,
+    "extract_max_results": null
+  },
+  {
+    "case_id": "duplicates_limit_nonunique",
+    "html": "html/duplicates_limit_nonunique.html",
+    "expected": "expected/duplicates_limit_nonunique.json",
+    "extract_unique": false,
+    "extract_max_results": 4
+  }
+]

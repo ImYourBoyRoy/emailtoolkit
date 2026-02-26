@@ -1,0 +1,11 @@
+{
+  "name": "ruff-check",
+  "status": "failed",
+  "return_code": 1,
+  "duration_sec": 0.5125889000000825,
+  "command": "C:\\Users\\Roy\\.pyenv\\pyenv-win\\versions\\3.12.10\\python.exe -m ruff check --exclude .quality_gate_venvs --exclude .venv --exclude venv .",
+  "description": "Run lint checks.",
+  "skipped_reason": null,
+  "stdout": "F401 [*] `os` imported but unused\n  --> test_emailtoolkit.py:8:8\n   |\n 6 | \"\"\"\n 7 | import json\n 8 | import os\n   |        ^^\n 9 | import subprocess\n10 | import sys\n   |\nhelp: Remove unused import: `os`\n\nF841 Local variable `pkg_root` is assigned to but never used\n   --> test_emailtoolkit.py:120:9\n    |\n118 |     # 8) CLI smoke tests\n119 |     try:\n120 |         pkg_root = Path(__file__).resolve().parent\n    |         ^^^^^^^^\n121 |         # parse\n122 |         out = subprocess.check_output([sys.executable, \"-m\", \"emailtoolkit.main\", \"parse\", \"test+tag@gmail.com\"])\n    |\nhelp: Remove assignment to unused variable `pkg_root`\n\nFound 2 errors.\n[*] 1 fixable with the `--fix` option (1 hidden fix can be enabled with the `--unsafe-fixes` option).\n",
+  "stderr": ""
+}

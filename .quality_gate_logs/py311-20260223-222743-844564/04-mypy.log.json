@@ -1,0 +1,11 @@
+{
+  "name": "mypy",
+  "status": "failed",
+  "return_code": 1,
+  "duration_sec": 0.18061819998547435,
+  "command": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe -m mypy src\\emailtoolkit",
+  "description": "Run static typing checks.",
+  "skipped_reason": null,
+  "stdout": "",
+  "stderr": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe: No module named mypy\n"
+}

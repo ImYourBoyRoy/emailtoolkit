@@ -1,0 +1,11 @@
+{
+  "name": "ruff-format-check",
+  "status": "failed",
+  "return_code": 1,
+  "duration_sec": 0.26104000001214445,
+  "command": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe -m ruff format --check --exclude .quality_gate_venvs --exclude .venv --exclude venv .",
+  "description": "Verify formatting consistency.",
+  "skipped_reason": null,
+  "stdout": "",
+  "stderr": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe: No module named ruff\n"
+}

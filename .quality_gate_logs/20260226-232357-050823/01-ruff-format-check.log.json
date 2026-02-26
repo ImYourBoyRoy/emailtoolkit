@@ -1,0 +1,11 @@
+{
+  "name": "ruff-format-check",
+  "status": "failed",
+  "return_code": 1,
+  "duration_sec": 0.5161456000000726,
+  "command": "C:\\Users\\Roy\\.pyenv\\pyenv-win\\versions\\3.12.10\\python.exe -m ruff format --check --exclude .quality_gate_venvs --exclude .venv --exclude venv .",
+  "description": "Verify formatting consistency.",
+  "skipped_reason": null,
+  "stdout": "Would reformat: src\\emailtoolkit\\__init__.pyi\nWould reformat: src\\emailtoolkit\\_version.py\nWould reformat: src\\emailtoolkit\\main.py\nWould reformat: src\\emailtoolkit\\models.py\nWould reformat: src\\emailtoolkit\\utils\\__init__.py\nWould reformat: src\\emailtoolkit\\utils\\cache.py\nWould reformat: src\\emailtoolkit\\utils\\disposable.py\nWould reformat: src\\emailtoolkit\\utils\\encoding.py\nWould reformat: src\\emailtoolkit\\utils\\logger.py\nWould reformat: src\\emailtoolkit\\utils\\smtp_probe.py\nWould reformat: test_emailtoolkit.py\n11 files would be reformatted, 9 files already formatted\n",
+  "stderr": ""
+}

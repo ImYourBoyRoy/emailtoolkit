@@ -1,0 +1,11 @@
+{
+  "name": "twine-check",
+  "status": "passed",
+  "return_code": 0,
+  "duration_sec": 2.1205761000001075,
+  "command": "C:\\Users\\Roy\\.pyenv\\pyenv-win\\versions\\3.12.10\\python.exe -m twine check dist/*",
+  "description": "Validate package metadata.",
+  "skipped_reason": null,
+  "stdout": "Checking dist\\emailtoolkit-0.1.5.dev0+gd9ab27d53.d20260226-py3-none-any.whl: PASSED\nChecking dist\\emailtoolkit-0.1.5.dev0+gd9ab27d53.d20260226.tar.gz: PASSED\n",
+  "stderr": ""
+}

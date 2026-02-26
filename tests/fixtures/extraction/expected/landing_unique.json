@@ -1,0 +1,18 @@
+{
+  "count": 3,
+  "normalized": [
+    "hello@example.com",
+    "team+dev@googlemail.com",
+    "info@example.org"
+  ],
+  "canonical": [
+    "hello@example.com",
+    "team@gmail.com",
+    "info@example.org"
+  ],
+  "ascii_domains": [
+    "example.com",
+    "googlemail.com",
+    "example.org"
+  ]
+}

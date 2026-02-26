@@ -1,0 +1,11 @@
+{
+  "name": "build",
+  "status": "passed",
+  "return_code": 0,
+  "duration_sec": 31.978617300000224,
+  "command": "C:\\Users\\Roy\\.pyenv\\pyenv-win\\versions\\3.12.10\\python.exe -m build",
+  "description": "Build sdist and wheel.",
+  "skipped_reason": null,
+  "stdout": "* Creating isolated environment: venv+pip...\n* Installing packages in isolated environment:\n  - hatch-vcs>=0.3\n  - hatchling>=1.25\n* Getting build dependencies for sdist...\n* Building sdist...\n* Building wheel from sdist\n* Creating isolated environment: venv+pip...\n* Installing packages in isolated environment:\n  - hatch-vcs>=0.3\n  - hatchling>=1.25\n* Getting build dependencies for wheel...\n* Building wheel...\nSuccessfully built emailtoolkit-0.1.5.dev0+gd9ab27d53.d20260226.tar.gz and emailtoolkit-0.1.5.dev0+gd9ab27d53.d20260226-py3-none-any.whl\n",
+  "stderr": ""
+}

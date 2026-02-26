@@ -1,3 +1,4 @@
+# ./src/emailtoolkit/__init__.py
 # emailtoolkit/__init__.py
 try:
     from ._version import __version__

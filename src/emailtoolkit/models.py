@@ -1,7 +1,9 @@
+# ./src/emailtoolkit/models.py
 # emailtoolkit/models.py
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional, Tuple
+
 
 @dataclass(frozen=True)
 class DomainInfo:
@@ -12,6 +14,7 @@ class DomainInfo:
     has_mx: bool = False
     has_a: bool = False
     disposable: bool = False
+
 
 @dataclass(frozen=True)
 class Email:
@@ -25,6 +28,7 @@ class Email:
     valid_syntax: bool
     deliverable_dns: bool
     reason: Optional[str] = None
+
 
 class EmailParseException(ValueError):
     def __init__(self, message: str, domain_info: Optional[DomainInfo] = None):

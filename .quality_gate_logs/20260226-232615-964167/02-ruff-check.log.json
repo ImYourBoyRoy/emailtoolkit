@@ -1,0 +1,11 @@
+{
+  "name": "ruff-check",
+  "status": "passed",
+  "return_code": 0,
+  "duration_sec": 0.3214994999998453,
+  "command": "C:\\Users\\Roy\\.pyenv\\pyenv-win\\versions\\3.12.10\\python.exe -m ruff check --exclude .quality_gate_venvs --exclude .venv --exclude venv .",
+  "description": "Run lint checks.",
+  "skipped_reason": null,
+  "stdout": "All checks passed!\n",
+  "stderr": ""
+}

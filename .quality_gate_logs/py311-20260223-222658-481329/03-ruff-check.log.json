@@ -1,0 +1,11 @@
+{
+  "name": "ruff-check",
+  "status": "failed",
+  "return_code": 1,
+  "duration_sec": 0.44870469998568296,
+  "command": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe -m ruff check --exclude .quality_gate_venvs --exclude .venv --exclude venv .",
+  "description": "Run lint checks.",
+  "skipped_reason": null,
+  "stdout": "",
+  "stderr": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe: No module named ruff\n"
+}

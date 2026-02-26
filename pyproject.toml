@@ -31,6 +31,14 @@ dependencies = ["email-validator>=2.2.0", "idna>=3.10"]
 [project.optional-dependencies]
 dns = ["dnspython>=2.7.0"]
 dotenv = ["python-dotenv>=1.1.1"]
+dev = [
+    "pytest>=8.2",
+    "pytest-rerunfailures>=14.0",
+    "ruff>=0.8.0",
+    "mypy>=1.13.0",
+    "build>=1.2.0",
+    "twine>=5.1.0",
+]
 [project.scripts]
 emailtoolkit = "emailtoolkit.main:_cli"
 
@@ -59,4 +67,8 @@ packages = ["src/emailtoolkit"]
 Homepage = "https://github.com/imyourboyroy/emailtoolkit"
 Repository = "https://github.com/imyourboyroy/emailtoolkit"
 "Bug Tracker" = "https://github.com/imyourboyroy/emailtoolkit/issues"
+
+[tool.pytest.ini_options]
+addopts = "-q -p no:capture"
+testpaths = ["tests"]
 

@@ -1,0 +1,11 @@
+{
+  "name": "ruff-check",
+  "status": "failed",
+  "return_code": 1,
+  "duration_sec": 0.28119059999971796,
+  "command": "C:\\Users\\Roy\\.pyenv\\pyenv-win\\versions\\3.12.10\\python.exe -m ruff check --exclude .quality_gate_venvs --exclude .venv --exclude venv .",
+  "description": "Run lint checks.",
+  "skipped_reason": null,
+  "stdout": "F401 [*] `pathlib.Path` imported but unused\n  --> test_emailtoolkit.py:11:21\n   |\n 9 | import subprocess\n10 | import sys\n11 | from pathlib import Path\n   |                     ^^^^\n12 | from typing import Tuple\n   |\nhelp: Remove unused import: `pathlib.Path`\n\nFound 1 error.\n[*] 1 fixable with the `--fix` option.\n",
+  "stderr": ""
+}

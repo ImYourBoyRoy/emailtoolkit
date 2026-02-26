@@ -1,39 +1,65 @@
-# emailtoolkit/main.py
-
 #!/usr/bin/env python3
+# ./src/emailtoolkit/main.py
+"""Command-line interface for EmailToolkit's existing command surface.
+
+Run via ``emailtoolkit`` (console script) or ``python -m emailtoolkit.main``.
+Inputs: CLI command + positional email/domain values + optional ``--config`` JSON path.
+Outputs: JSON/text printed to stdout; process exits non-zero on unhandled exceptions.
+Side effects: may perform DNS lookups through EmailTools depending on command/config.
+Operational notes: intentionally mirrors existing API commands without adding new features.
+"""
+
 from __future__ import annotations
-import argparse, json, sys
+
+import argparse
+import json
+import sys
+from typing import Any
+
 from .emails import build_tools
 
-def _cli():
-    p = argparse.ArgumentParser(prog="emailtoolkit", description="Email parsing and DNS checks")
-    p.add_argument("--config", help="Path to config.json", default=None)
-    sub = p.add_subparsers(dest="cmd", required=True)
 
-    sp = sub.add_parser("parse", help="Parse a single email")
-    sp.add_argument("email")
+def _to_json(data: Any) -> str:
+    return json.dumps(data, default=lambda value: value.__dict__, indent=2)
 
-    sv = sub.add_parser("validate", help="Validate a single email")
-    sv.add_argument("email")
 
-    sn = sub.add_parser("normalize", help="Normalize a single email")
-    sn.add_argument("email")
+def _cli() -> int:
+    parser = argparse.ArgumentParser(
+        prog="emailtoolkit",
+        description="Email parsing and DNS checks",
+    )
+    parser.add_argument("--config", help="Path to config.json", default=None)
+    subcommands = parser.add_subparsers(dest="cmd", required=True)
 
-    sc = sub.add_parser("canonical", help="Canonical form of a single email")
-    sc.add_argument("email")
+    parse_parser = subcommands.add_parser("parse", help="Parse a single email")
+    parse_parser.add_argument("email")
 
-    se = sub.add_parser("extract", help="Extract from text on stdin")
-    se.add_argument("--limit", type=int, default=0)
+    validate_parser = subcommands.add_parser("validate", help="Validate a single email")
+    validate_parser.add_argument("email")
 
-    sd = sub.add_parser("domain", help="Domain health")
-    sd.add_argument("domain")
+    normalize_parser = subcommands.add_parser(
+        "normalize", help="Normalize a single email"
+    )
+    normalize_parser.add_argument("email")
 
-    args = p.parse_args()
+    canonical_parser = subcommands.add_parser(
+        "canonical", help="Canonical form of a single email"
+    )
+    canonical_parser.add_argument("email")
+
+    extract_parser = subcommands.add_parser(
+        "extract", help="Extract from text on stdin"
+    )
+    extract_parser.add_argument("--limit", type=int, default=0)
+
+    domain_parser = subcommands.add_parser("domain", help="Domain health")
+    domain_parser.add_argument("domain")
+
+    args = parser.parse_args()
     tools = build_tools(args.config)
 
     if args.cmd == "parse":
-        e = tools.parse(args.email)
-        print(json.dumps(e.__dict__, default=lambda o: o.__dict__, indent=2))
+        print(_to_json(tools.parse(args.email).__dict__))
     elif args.cmd == "validate":
         print("true" if tools.is_valid(args.email) else "false")
     elif args.cmd == "normalize":
@@ -44,11 +70,12 @@ def _cli():
         text = sys.stdin.read()
         if args.limit:
             tools.cfg.extract_max_results = args.limit
-        out = [e.__dict__ for e in tools.extract(text)]
-        print(json.dumps(out, default=lambda o: o.__dict__, indent=2))
+        print(_to_json([email.__dict__ for email in tools.extract(text)]))
     elif args.cmd == "domain":
-        info = tools.domain_health(args.domain)
-        print(json.dumps(info.__dict__, indent=2))
+        print(_to_json(tools.domain_health(args.domain).__dict__))
+
+    return 0
+
 
 if __name__ == "__main__":
-    _cli()
+    raise SystemExit(_cli())

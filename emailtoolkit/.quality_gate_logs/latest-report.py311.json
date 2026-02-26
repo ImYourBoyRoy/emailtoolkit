@@ -1,0 +1,96 @@
+{
+  "project_path": "C:\\Users\\Roy\\Desktop\\AI_tools\\emailtoolkit",
+  "started_at_iso": "2026-02-23T22:27:43.844564+00:00",
+  "finished_at_iso": "2026-02-23T22:28:16.307935+00:00",
+  "duration_sec": 32.46266479999758,
+  "ok": false,
+  "passed": 2,
+  "failed": 3,
+  "skipped": 2,
+  "steps": [
+    {
+      "name": "install-dev",
+      "command": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe -m pip install -e .[dev]",
+      "status": "passed",
+      "return_code": 0,
+      "duration_sec": 30.317027799988864,
+      "stdout": "Obtaining file:///C:/Users/Roy/Desktop/AI_tools/emailtoolkit\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Checking if build backend supports build_editable: started\n  Checking if build backend supports build_editable: finished with status 'done'\n  Getting requirements to build editable: started\n  Getting requirements to build editable: finished with status 'done'\n  Installing backend dependencies: started\n  Installing backend dependencies: finished with status 'done'\n  Preparing editable metadata (pyproject.toml): started\n  Preparing editable metadata (pyproject.toml): finished with status 'done'\nCollecting email-validator>=2.2.0 (from emailtoolkit==0.1.5.dev0+gd9ab27d53.d20260223)\n  Using cached email_validator-2.3.0-py3-none-any.whl.metadata (26 kB)\nRequirement already satisfied: idna>=3.10 in C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Lib\\site-packages (from emailtoolkit==0.1.5.dev0+gd9ab27d53.d20260223) (3.11)\nCollecting pytest>=8.2 (from emailtoolkit==0.1.5.dev0+gd9ab27d53.d20260223)\n  Using cached pytest-9.0.2-py3-none-any.whl.metadata (7.6 kB)\nRequirement already satisfied: dnspython>=2.0.0 in C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Lib\\site-packages (from email-validator>=2.2.0->emailtoolkit==0.1.5.dev0+gd9ab27d53.d20260223) (2.8.0)\nCollecting colorama>=0.4 (from pytest>=8.2->emailtoolkit==0.1.5.dev0+gd9ab27d53.d20260223)\n  Using cached colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)\nRequirement already satisfied: iniconfig>=1.0.1 in C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Lib\\site-packages (from pytest>=8.2->emailtoolkit==0.1.5.dev0+gd9ab27d53.d20260223) (2.3.0)\nRequirement already satisfied: packaging>=22 in C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Lib\\site-packages (from pytest>=8.2->emailtoolkit==0.1.5.dev0+gd9ab27d53.d20260223) (26.0)\nRequirement already satisfied: pluggy<2,>=1.5 in C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Lib\\site-packages (from pytest>=8.2->emailtoolkit==0.1.5.dev0+gd9ab27d53.d20260223) (1.6.0)\nRequirement already satisfied: pygments>=2.7.2 in C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Lib\\site-packages (from pytest>=8.2->emailtoolkit==0.1.5.dev0+gd9ab27d53.d20260223) (2.19.2)\nUsing cached email_validator-2.3.0-py3-none-any.whl (35 kB)\nUsing cached pytest-9.0.2-py3-none-any.whl (374 kB)\nUsing cached colorama-0.4.6-py2.py3-none-any.whl (25 kB)\nBuilding wheels for collected packages: emailtoolkit\n  Building editable for emailtoolkit (pyproject.toml): started\n  Building editable for emailtoolkit (pyproject.toml): finished with status 'done'\n  Created wheel for emailtoolkit: filename=emailtoolkit-0.1.5.dev0+gd9ab27d53.d20260223-py3-none-any.whl size=6523 sha256=cdf588c0b64cf95f2fba6d34fcbd98de383e27686334c6c9ae0c602c209edafe\n  Stored in directory: C:\\Users\\Roy\\AppData\\Local\\Temp\\pip-ephem-wheel-cache-ol7i84_i\\wheels\\37\\08\\0d\\0faebcc23aa72c3f97a15c3d4cf2102e3271def62c2f822bd1\nSuccessfully built emailtoolkit\nInstalling collected packages: email-validator, colorama, pytest, emailtoolkit\n\nSuccessfully installed colorama-0.4.6 email-validator-2.3.0 emailtoolkit-0.1.5.dev0+gd9ab27d53.d20260223 pytest-9.0.2\n",
+      "stderr": "",
+      "group": "setup",
+      "description": "Install project development dependencies.",
+      "skipped_reason": null
+    },
+    {
+      "name": "ruff-format-check",
+      "command": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe -m ruff format --check --exclude .quality_gate_venvs --exclude .venv --exclude venv .",
+      "status": "failed",
+      "return_code": 1,
+      "duration_sec": 0.26104000001214445,
+      "stdout": "",
+      "stderr": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe: No module named ruff\n",
+      "group": "prebuild",
+      "description": "Verify formatting consistency.",
+      "skipped_reason": null
+    },
+    {
+      "name": "ruff-check",
+      "command": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe -m ruff check --exclude .quality_gate_venvs --exclude .venv --exclude venv .",
+      "status": "failed",
+      "return_code": 1,
+      "duration_sec": 0.23256010000477545,
+      "stdout": "",
+      "stderr": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe: No module named ruff\n",
+      "group": "prebuild",
+      "description": "Run lint checks.",
+      "skipped_reason": null
+    },
+    {
+      "name": "mypy",
+      "command": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe -m mypy src\\emailtoolkit",
+      "status": "failed",
+      "return_code": 1,
+      "duration_sec": 0.18061819998547435,
+      "stdout": "",
+      "stderr": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe: No module named mypy\n",
+      "group": "prebuild",
+      "description": "Run static typing checks.",
+      "skipped_reason": null
+    },
+    {
+      "name": "pytest",
+      "command": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe -m pytest -q",
+      "status": "passed",
+      "return_code": 0,
+      "duration_sec": 2.1238348999759182,
+      "stdout": "..........................                                               [100%]\n",
+      "stderr": "",
+      "group": "prebuild",
+      "description": "Run test suite.",
+      "skipped_reason": null
+    },
+    {
+      "name": "build",
+      "command": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe -m build",
+      "status": "skipped",
+      "return_code": null,
+      "duration_sec": 0.0,
+      "stdout": "",
+      "stderr": "",
+      "group": "build",
+      "description": "Build sdist and wheel.",
+      "skipped_reason": "prebuild checks failed"
+    },
+    {
+      "name": "twine-check",
+      "command": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe -m twine check dist/*",
+      "status": "skipped",
+      "return_code": null,
+      "duration_sec": 0.0,
+      "stdout": "",
+      "stderr": "",
+      "group": "build",
+      "description": "Validate package metadata.",
+      "skipped_reason": "prebuild checks failed"
+    }
+  ]
+}

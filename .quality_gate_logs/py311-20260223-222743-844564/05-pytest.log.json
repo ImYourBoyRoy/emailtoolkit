@@ -1,0 +1,11 @@
+{
+  "name": "pytest",
+  "status": "passed",
+  "return_code": 0,
+  "duration_sec": 2.1238348999759182,
+  "command": "C:\\Users\\Roy\\Desktop\\AI_tools\\.quality_gate_venvs\\emailtoolkit\\py311\\Scripts\\python.exe -m pytest -q",
+  "description": "Run test suite.",
+  "skipped_reason": null,
+  "stdout": "..........................                                               [100%]\n",
+  "stderr": ""
+}
