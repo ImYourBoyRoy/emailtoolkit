@@ -1,6 +1,15 @@
 # ./src/emailtoolkit/models.py
-# emailtoolkit/models.py
+"""
+Immutable public data models used by EmailToolkit parse and health APIs.
+Run via imports from `emailtoolkit` consumers and internal modules.
+Inputs: normalized email/domain metadata produced during parsing and DNS checks.
+Outputs: frozen dataclasses and typed exceptions for downstream application code.
+Side effects: none.
+Operational notes: models remain serialization-friendly and safe for caching/testing.
+"""
+
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import Optional, Tuple
 

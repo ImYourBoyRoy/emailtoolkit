@@ -182,9 +182,11 @@ def test_domain_health_handles_idna(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
         tools._dns,
         "query",
-        lambda domain: (("mx.idna.test",), tuple(), True, False)
-        if domain == "xn--r8jz45g.xn--zckzah"
-        else (tuple(), tuple(), False, False),
+        lambda domain: (
+            (("mx.idna.test",), tuple(), True, False)
+            if domain == "xn--r8jz45g.xn--zckzah"
+            else (tuple(), tuple(), False, False)
+        ),
     )
 
     info = tools.domain_health("例え.テスト")
@@ -236,3 +238,18 @@ def test_domain_health_cache_hits_and_misses(monkeypatch: pytest.MonkeyPatch) ->
     tools._dns._cache.clear()
     tools.domain_health("example.com")
     assert call_count[0] == 2
+
+
+def test_classify_mailbox_and_domain_matches(monkeypatch: pytest.MonkeyPatch) -> None:
+    tools = EmailTools(cfg=Config())
+    monkeypatch.setattr(
+        tools._dns,
+        "query",
+        lambda _domain: (("mx.example.com",), ("203.0.113.42",), True, True),
+    )
+    monkeypatch.setattr(emails_mod, "_default_instance", tools)
+
+    assert emails_mod.classify_mailbox("info@example.com") == "generic"
+    assert emails_mod.classify_mailbox("jane.doe@example.com") == "person_like"
+    assert emails_mod.domain_matches("jane.doe@example.com", "example.com") is True
+    assert emails_mod.domain_matches("jane.doe@example.com", "other.com") is False

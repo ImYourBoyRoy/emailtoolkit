@@ -29,6 +29,19 @@ _DOMAIN_LABEL_RX: Pattern[str] = re.compile(
     r"^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$",
     re.IGNORECASE,
 )
+_GENERIC_MAILBOX_LOCALPARTS = {
+    "admin",
+    "billing",
+    "contact",
+    "hello",
+    "help",
+    "info",
+    "office",
+    "sales",
+    "service",
+    "support",
+    "team",
+}
 
 
 class EmailTools:
@@ -310,3 +323,25 @@ def compare(a: str, b: str) -> bool:
 
 def domain_health(domain: str) -> DomainInfo:
     return _get_default().domain_health(domain)
+
+
+def classify_mailbox(raw: str) -> str:
+    """Classify a mailbox as generic, role-based, or person-like."""
+    try:
+        parsed = parse(raw)
+    except EmailParseException:
+        return "invalid"
+    local_part = parsed.local.strip().lower().replace(".", "").replace("_", "")
+    return "generic" if local_part in _GENERIC_MAILBOX_LOCALPARTS else "person_like"
+
+
+def domain_matches(raw: str, domain: str) -> bool:
+    """Return whether an email address belongs to the supplied domain."""
+    try:
+        parsed = parse(raw)
+    except EmailParseException:
+        return False
+    normalized_domain = (domain or "").strip().lower().lstrip("@")
+    if not normalized_domain:
+        return False
+    return parsed.domain_info.ascii_domain.lower() == normalized_domain

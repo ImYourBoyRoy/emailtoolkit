@@ -68,6 +68,12 @@ Homepage = "https://github.com/imyourboyroy/emailtoolkit"
 Repository = "https://github.com/imyourboyroy/emailtoolkit"
 "Bug Tracker" = "https://github.com/imyourboyroy/emailtoolkit/issues"
 
+[tool.ruff]
+exclude = ["src/emailtoolkit/_version.py"]
+
+[tool.ruff.format]
+exclude = ["src/emailtoolkit/_version.py"]
+
 [tool.pytest.ini_options]
 addopts = "-q -p no:capture"
 testpaths = ["tests"]
